@@ -388,7 +388,52 @@ def get_image_colorizer(
     else:
         return get_stable_image_colorizer(render_factor=render_factor, stats=stats)
 
+####################A#A##################
+def get_anime_colorizer(
+    render_factor: int = 35, artistic: bool = True, stats: tuple = imagenet_stats
+) -> ModelImageVisualizer:
+    if artistic:
+        return get_artistic_image_colorizer(render_factor=render_factor, stats=stats)
+    else:
+        return get_stable_image_colorizer(render_factor=render_factor, stats=stats)
 
+def get_grayscale_anime_colorizer(
+    root_folder: Path = Path('./'),
+    weights_name: str = 'ColorizeStable_gen',
+    results_dir='result_images',
+    render_factor: int = 35,
+    stats: tuple = imagenet_stats
+) -> ModelImageVisualizer:
+    learn = gen_inference_wide(root_folder=root_folder, weights_name=weights_name, stats=stats)
+    filtr = MasterFilter([ColorizerFilter(learn=learn, stats=stats)], render_factor=render_factor)
+    vis = ModelImageVisualizer(filtr, results_dir=results_dir)
+    return vis
+    
+ def get_sketch_anime_colorizer(
+    root_folder: Path = Path('./'),
+    weights_name: str = 'ColorizeStable_gen',
+    results_dir='result_images',
+    render_factor: int = 35,
+    stats: tuple = imagenet_stats
+) -> ModelImageVisualizer:
+    learn = gen_inference_wide(root_folder=root_folder, weights_name=weights_name, stats=stats)
+    filtr = MasterFilter([ColorizerFilter(learn=learn, stats=stats)], render_factor=render_factor)
+    vis = ModelImageVisualizer(filtr, results_dir=results_dir)
+    return vis   
+ 
+ def get_sketch2gray_anime_colorizer(
+    root_folder: Path = Path('./'),
+    weights_name: str = 'ColorizeStable_gen',
+    results_dir='result_images',
+    render_factor: int = 35,
+    stats: tuple = imagenet_stats
+) -> ModelImageVisualizer:
+    learn = gen_inference_wide(root_folder=root_folder, weights_name=weights_name, stats=stats)
+    filtr = MasterFilter([ColorizerFilter(learn=learn, stats=stats)], render_factor=render_factor)
+    vis = ModelImageVisualizer(filtr, results_dir=results_dir)
+    return vis     
+  
+####################A#A##################
 def get_stable_image_colorizer(
     root_folder: Path = Path('./'),
     weights_name: str = 'ColorizeStable_gen',
